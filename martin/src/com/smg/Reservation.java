@@ -6,6 +6,7 @@ import java.util.List;
 public class Reservation{
     Person owner;
     List<Person> others;
+    Club club;
 
     Reservation(Person owner){
         this.owner = owner;
@@ -28,27 +29,21 @@ public class Reservation{
             }
         }
 
-
         if (!hasReservation){
             throw new Exception("Ne mojete da vlezete bez rezervaciq!\n");
         }
 
         ArrayList<Person> toEnter = new ArrayList<Person>();
-        Group inside = new Group();
 
         for (Person currentPerson : this.others){
             if (currentPerson.getAge() < 18){
                 System.out.println(currentPerson.getName() + ", nqmash 18 godini!");
-                boolean give20 = false;
-                // shte pita choveka dali iska da dade 20 lv za da vleze
-                // proverka dali ima 20 lv
-                // eventualno go dobavq v toEnter
             }
             else{
                 toEnter.add(currentPerson);
             }
         }
-
+        Group inside = new Group();
         for (Person currentPerson : toEnter){
             if (currentPerson.getMoney() < 5){
                 System.out.println(currentPerson.getName() + ", nqmash 5 lv za vhod!");
@@ -57,8 +52,33 @@ public class Reservation{
                 inside.addPerson(currentPerson);
             }
         }
-
+        this.club = club;
         club.addGroup(inside);
+    }
+
+    void getItem(String name, float price) throws Exception {
+        if (this.club == null){
+            throw new Exception("Vse oshte ne ste vlezli v diskotekata");
+        }
+        for (Group currentGroup : this.club.groups){
+            for (Person currentPerson : currentGroup.people){
+                if (currentPerson.equals(this.owner)){
+                    Item newItem = new Item(name, price);
+                    System.out.println(this.owner.getName() + " porucha " + name + "(" + price + ") kum smetkata na masata");
+                    currentGroup.addItem(newItem);
+                }
+            }
+        }
+    }
+
+    void pay(){
+        for (Group currentGroup : this.club.groups){
+            for (Person currentPerson : currentGroup.people){
+                if (currentPerson.equals(this.owner)){
+                    currentGroup.pay();
+                }
+            }
+        }
     }
 
 }

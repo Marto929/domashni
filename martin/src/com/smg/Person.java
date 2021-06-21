@@ -23,6 +23,10 @@ public class Person {
         return this.money;
     }
 
+    void setMoney(int money){
+        this.money = money;
+    }
+
     void enter (Club club){
         for (Reservation currentReservation : club.reservations){
             for (Person currentPerson : currentReservation.others){
@@ -34,6 +38,16 @@ public class Person {
                     }
                 }
             }
+        }
+    }
+
+    void getItemAlone (String name, float price) throws Exception {
+        if (price > this.money){
+            throw new Exception(getName() + ", nqmate dostatucho pari za tozi produkt!");
+        }
+        else {
+            this.money -= price;
+            System.out.println(getName() + " si porucha " + name + "(" + price + ")\nOstanali pari: " + (this.getMoney() - price));
         }
     }
 }
